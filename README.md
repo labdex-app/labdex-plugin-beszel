@@ -1,6 +1,6 @@
 # Beszel
 
-A [labdex](https://github.com/reykimedev/labdex) plugin. Host status from Beszel agents (online or down), with CPU, memory and disk on each host page. Adds hosts as Beszel systems (plan, then apply) and rolls the agent out over Ansible.
+A [labdex](https://github.com/labdex-app/labdex) plugin. Host status from Beszel agents (online or down), with CPU, memory and disk on each host page. Adds hosts as Beszel systems (plan, then apply) and rolls the agent out over Ansible.
 
 **Version** 1.0 · **Works with** labdex >=1.0,<2 · **Plugin id** `beszel`
 
