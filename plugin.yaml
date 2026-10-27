@@ -1,0 +1,28 @@
+id: beszel
+name: Beszel
+kind: integration
+tags: [monitoring, status]
+version: "1.0"
+labdex: ">=1.0,<2"
+description: Host status from Beszel agents (online or down), with CPU, memory and disk on each host page. Adds hosts as Beszel systems (plan, then apply) and rolls the agent out over Ansible.
+settings:
+  - {key: url, label: Hub URL, type: string, required: true, placeholder: "https://beszel.lab.example.net"}
+  - {key: email, label: User (email), type: string, required: true, help: "A Beszel user; systems it creates belong to it"}
+  - {key: password, label: Password, type: secret, required: true}
+  - {key: verify_tls, label: Check the TLS certificate, type: bool, default: true}
+  - {key: agent_key, label: Hub public key, type: string, help: "ssh-ed25519 … from Beszel's “Add system” dialog; the agent only accepts this hub"}
+  - {key: agent_port, label: Agent port, type: int, default: 45876, min: 1, max: 65535}
+  - {key: agent_token, label: Universal token, type: secret, help: "Optional: lets agents connect to the hub themselves (with the hub URL)"}
+  - {key: ssh_user, label: SSH user (agent install), type: string}
+  - {key: ssh_private_key, label: SSH private key (agent install), type: secret, help: Pick a global secret to share one key between modules}
+  - {key: host_key_checking, label: Check SSH host keys, type: bool, default: true}
+host_settings:
+  - {key: address, label: Address for Beszel, type: string, help: "Default: the host's primary IPv4 address"}
+actions:
+  - {id: test, label: Check connection, mode: run}
+  - {id: poll, label: Read host status, mode: run, schedulable: true, schedule_default: 2}
+  - {id: sync_systems, label: Add hosts as systems, mode: plan, description: "Every host this instance applies to that Beszel doesn't know yet"}
+  - {id: install_agent, label: Install the agent, mode: run, scope: host, danger: true, description: "Downloads Beszel's install script on the host and runs it with the hub key (and token)"}
+widgets:
+  - {id: systems, label: Beszel systems, where: dashboard}
+  - {id: host, label: Beszel, where: host}
